@@ -107,70 +107,41 @@ sudo dmesg | tail -5
 ### Screenshot 1 — Multi-container supervision
 Two containers (alpha and beta) started and tracked concurrently under one supervisor process.
 
-```
-Supervisor started with rootfs: ./rootfs
-Supervisor listening on /tmp/mini_runtime.sock
-
-$ sudo ./engine start alpha ./rootfs /bin/sh
-Started alpha (PID 18318)
-$ sudo ./engine start beta ./rootfs /bin/sh
-Started beta (PID 18326)
-```
+![Screenshot 1](screenshots/1.1.png)
+![Screenshot 1](screenshots/1.2.png)
 
 ### Screenshot 2 — Metadata tracking (ps)
 Output of `engine ps` showing container ID, PID, state, and start time.
 
-```
-ID               PID      STATE      STARTED
-beta             18326    running    1776138904
-alpha            18318    running    1776138904
-```
+![Screenshot 2](screenshots/2.png)
 
 ### Screenshot 3 — Logging pipeline
 Log file contents captured through the producer-consumer pipeline.
 
-```
-$ sudo ./engine logs alpha
-Inside container! Setting up environment...
-Container ready. Running command: /bin/sh
-```
+![Screenshot 3](screenshots/3.1.png)
+![Screenshot 3](screenshots/3.2.png)
 
 ### Screenshot 4 — CLI + IPC
 CLI command issued and supervisor responding via UNIX domain socket.
 
-```
-$ sudo ./engine start gamma ./rootfs /bin/busybox
-Started gamma (PID 4590)
-```
+![Screenshot 4](screenshots/4.png)
 
 ### Screenshot 5 — Soft limit warning
 Kernel module emitting a soft limit warning via dmesg when container exceeds 40 MiB.
 
-```
-[container_monitor] Registering container=alpha pid=19053 soft=41943040 hard=67108864
-[container_monitor] SOFT LIMIT container=alpha pid=19053 rss=42414080 limit=41943040
-```
+![Screenshot 5](screenshots/5.png)
 
 ### Screenshot 6 — Hard limit enforcement
 Container killed by kernel module after exceeding 64 MiB hard limit.
 
-```
-[container_monitor] HARD LIMIT container=alpha pid=19053 rss=67579904 limit=67108864
-```
+![Screenshot 6](screenshots/6.png)
 
 `engine ps` then shows the container in `killed` state.
 
 ### Screenshot 7 — Scheduling experiment
 Two CPU-bound containers run concurrently with different nice values.
 
-```
-$ time sudo ./engine run c1 ./rootfs /cpu_hog --nice 0 &
-$ time sudo ./engine run c2 ./rootfs /cpu_hog --nice 10 &
-$ wait
-
-c2: real 0m9.249s
-c1: real 0m19.250s
-```
+![Screenshot 7](screenshots/7.png)
 
 | Container | Nice Value | Execution Time |
 |-----------|------------|----------------|
@@ -178,16 +149,8 @@ c1: real 0m19.250s
 | c1 | 0 | 19.25 seconds |
 
 ### Screenshot 8 — Clean teardown
-No zombie processes remain after shutdown. Module unloads cleanly.
-
-```
-[container_monitor] Unregister request container=c1 pid=19886
-[container_monitor] Unregister request container=c2 pid=19843
-[container_monitor] Module unloaded.
-
-$ ps aux | grep engine
-(no results)
-```
+![Screenshot 8](screenshots/8.1.png)
+![Screenshot 8](screenshots/8.2.png)
 
 ---
 
@@ -310,4 +273,4 @@ This demonstrates the core behavior of CFS: higher-weight (lower nice) processes
 
 ## GitHub Repository
 
-[https://github.com/shivangjhalani/OS-Jackfruit](https://github.com/shivangjhalani/OS-Jackfruit)
+https://github.com/HarShithRreddy/OS-Jackfruit.git
